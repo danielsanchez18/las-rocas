@@ -1,0 +1,33 @@
+<div class="flex flex-col gap-y-7">
+    <h4 class="uppercase font-title text-lg pb-3 border-b border-gray-200">Filtros ({{ activeFiltersCount }})</h4>
+
+    <div class="flex flex-col gap-y-3">
+
+        <div class="flex items-center gap-x-3 cursor-pointer">
+            <input type="checkbox" id="filter-chef" [(ngModel)]="isChefRecommendation" class="w-4 h-4 border-gray-300 text-primary">
+            <label for="filter-chef" class="flex-1 text-sm cursor-pointer">Recomendación del Chef</label>
+        </div>
+
+        <div class="flex items-center gap-x-3 cursor-pointer">
+            <input type="checkbox" id="filter-new" [(ngModel)]="isNewProduct" class="w-4 h-4 border-gray-300 text-primary">
+            <label for="filter-new" class="flex-1 text-sm cursor-pointer">Producto Nuevo</label>
+        </div>
+
+        <div class="flex items-center gap-x-3 cursor-pointer">
+            <input type="checkbox" id="filter-share" [(ngModel)]="isToShare" class="w-4 h-4 border-gray-300 text-primary">
+            <label for="filter-share" class="flex-1 text-sm cursor-pointer">Para Compartir</label>
+        </div>
+
+    </div>
+
+    <div class="flex items-center gap-x-1">
+        <button (click)="clearFilters()" class="flex-1 text-sm font-medium px-4 py-2 border border-gray-200 hover:bg-gray-100 transition-colors cursor-pointer">
+            Limpiar
+        </button>
+        <button (click)="applyFilters()"
+            class="flex-1 text-sm font-medium px-4 py-2 text-white bg-primary hover:bg-primary-hover-ui transition-colors cursor-pointer">
+            Aplicar
+        </button>
+    </div>
+
+</div>

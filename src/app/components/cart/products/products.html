@@ -1,0 +1,63 @@
+<!-- Cart Section -->
+<div class="divide-y divide-gray-300">
+
+    @if (items.length === 0) {
+    <div class="py-10 text-center">
+        <p class="text-gray-500">Tu carrito está vacío.</p>
+    </div>
+    }
+
+    @for (item of items; track item.productId) {
+    <div class="py-5 flex gap-x-5">
+
+        <!-- Imagen -->
+        <div class="size-20 sm:size-30 bg-gray-200">
+            @if (item.product?.imageUrl) {
+            <img [src]="item.product.imageUrl" alt="{{ item.product.name }}" class="w-full h-full object-cover">
+            }
+        </div>
+
+        <!-- Description -->
+        <div class="flex-1 flex flex-col  gap-y-3 sm:gap-y-5 sm:mt-2">
+
+            <div class="flex justify-between gap-x-2">
+                <div>
+                    <h2 class="">{{ item.product?.name || 'Producto' }}</h2>
+                    <p class="text-sm text-gray-700 truncate max-w-sm">{{ item.product?.shortDescription || 'Sin
+                        descripción' }}</p>
+                </div>
+                <button (click)="removeItem(item)" class="h-fit">
+                    <svg lucideX class="size-5 text-gray-500 hover:text-black" />
+                </button>
+            </div>
+
+            <div class="flex justify-between items-start">
+                <div class="text-sm space-y-1">
+                    <p class="text-gray-500">Precio un.</p>
+                    <p>S/. {{ (item.product?.finalPrice || item.product?.basePrice || 0) | number:'1.2-2' }}</p>
+                </div>
+
+                <div class="text-sm text-center space-y-1">
+                    <p class="text-gray-500">Cantidad</p>
+                    <div class="flex items-center">
+                        <button (click)="updateQuantity(item, -1)"
+                            class="size-5 flex items-center justify-center border border-gray-300 hover:bg-gray-200 leading-none text-base cursor-pointer">-</button>
+                        <p class="h-5 w-10 text-center">{{ item.quantity }}</p>
+                        <button (click)="updateQuantity(item, 1)"
+                            class="size-5 flex items-center justify-center border border-gray-300 hover:bg-gray-200 leading-none text-base cursor-pointer">+</button>
+                    </div>
+                </div>
+
+                <div class="text-sm space-y-1 text-end">
+                    <p class="text-gray-500">Subtotal</p>
+                    <p class="font-medium">S/. {{ ((item.product?.finalPrice || item.product?.basePrice || 0) *
+                        item.quantity) | number:'1.2-2' }}</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    }
+
+</div>

@@ -1,0 +1,18 @@
+<div class="min-h-dvh flex flex-col">
+  <component-shared-navbar />
+  <div class="flex-1">
+    <router-outlet />
+  </div>
+</div>
+
+<div id="hs-offcanvas-example"
+  class="hs-overlay hs-overlay-open:translate-x-0 hidden translate-x-full fixed top-0 inset-e-0 transition-all duration-300 transform h-full max-w-sm w-full z-80 bg-overlay border-e border-overlay-line"
+  role="dialog" tabindex="-1" aria-labelledby="hs-offcanvas-example-label">
+  <component-cart-offcanvas />
+</div>
+
+<div id="hs-overlay-search"
+  class="hs-overlay hidden size-full fixed top-0 inset-s-0 z-80 overflow-x-hidden overflow-y-auto pointer-events-none"
+  role="dialog" tabindex="-1" aria-labelledby="hs-overlay-search-label">
+  <component-search />
+</div>

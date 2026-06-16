@@ -1,0 +1,55 @@
+<div class="space-y-5" *ngIf="checkoutData">
+
+    <div class="p-5 border border-gray-200 space-y-3">
+        <div class="flex items-center justify-between gap-x-2">
+            <p class="font-medium text-sm">Información del Usuario</p>
+            <a href="/checkout" class="text-xs font-medium underline underline-offset-2 hover:text-primary">Editar</a>
+        </div>
+        <div class="flex items-start gap-x-3">
+            <svg lucideUser class="mt-0.5 size-4 text-gray-700" />
+            <div class="text-sm text-gray-700">
+                <p>{{ checkoutData.names || 'No especificado' }}</p>
+                <p>{{ checkoutData.email || 'No especificado' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-5 border border-gray-200 space-y-3">
+        <div class="flex items-start justify-between gap-x-2">
+            <p class="font-medium text-sm">Información de Contacto</p>
+            <a href="/checkout" class="text-xs font-medium underline underline-offset-2 hover:text-primary">Editar</a>
+        </div>
+        <div class="flex items-start gap-x-3">
+            <svg lucidePhone class="size-4 text-gray-700" />
+            <div class="text-sm text-gray-700">
+                <p>{{ checkoutData.phoneNumber || 'No especificado' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-5 border border-gray-200 space-y-3">
+        <div class="flex items-center justify-between gap-x-2">
+            <p class="font-medium text-sm">Entrega del Pedido</p>
+            <a href="/checkout" class="text-xs font-medium underline underline-offset-2 hover:text-primary">Editar</a>
+        </div>
+
+        @if (checkoutData.deliveryMethod === 'pickup') {
+        <div class="flex items-start gap-x-3">
+            <svg lucideStore class="mt-0.5 size-4 text-gray-700" />
+            <div class="text-sm text-gray-700">
+                <p>Recoger en restaurante</p>
+                <p>Miguel Grau 872, Monsefú</p>
+            </div>
+        </div>
+        } @else {
+        <div class="flex items-start gap-x-3">
+            <svg lucideShoppingBag class="mt-0.5 size-4 text-gray-700" />
+            <div class="text-sm text-gray-700">
+                <p>Entrega a domicilio</p>
+                <p>{{ checkoutData.address || 'No especificado' }}</p>
+            </div>
+        </div>
+        }
+    </div>
+
+</div>

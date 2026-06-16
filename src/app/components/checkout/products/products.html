@@ -1,0 +1,25 @@
+<div class="flex flex-col gap-3">
+
+    @for (item of items; track item.productId) {
+    <div class="flex items-center gap-x-5">
+
+        <div class="w-20 h-23 bg-gray-200">
+            @if (item.product?.imageUrl) {
+                <img [src]="item.product.imageUrl" alt="{{ item.product.name }}" class="w-full h-full object-cover">
+            }
+        </div>
+
+        <div class="space-y-0.5">
+            <p class="text-sm font-medium">{{ item.product?.name || 'Producto' }}</p>
+            <p class="text-sm text-gray-500">Cantidad: {{ item.quantity }}</p>
+            <p class="text-sm">S/ {{ ((item.product?.finalPrice || item.product?.basePrice || 0) * item.quantity) | number:'1.2-2' }}</p>
+        </div>
+
+    </div>
+    }
+
+    @if (items.length === 0) {
+        <p class="text-sm text-gray-500 text-center py-5">No hay productos en tu carrito.</p>
+    }
+
+</div>

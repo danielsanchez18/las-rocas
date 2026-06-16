@@ -1,0 +1,63 @@
+<div class="relative flex items-center gap-2">
+    <!-- Left Arrow -->
+    @if (showLeftArrow) {
+    <div class="absolute left-0 z-10 h-10 pr-2 bg-linear-to-r from-white to-white flex items-center">
+        <button (click)="scrollLeft()"
+            class="bg-white border border-gray-200 p-1.5 hover:bg-gray-50 flex items-center justify-center transition-opacity">
+            <svg lucideChevronLeft class="size-5" />
+        </button>
+    </div>
+    }
+
+    <!-- Filter Button (Mobile) -->
+    <button class="lg:hidden px-3 py-1.5 border border-gray-200 hover:bg-gray-50 shrink-0">
+        <span class="h-6 flex items-center justify-center gap-x-1 text-sm text-nowrap">
+            <svg lucideSlidersHorizontal class="size-3.5" />
+        </span>
+    </button>
+
+    <!-- Scroll Container -->
+    <div #scrollContainer (scroll)="onScroll()"
+        class="flex items-center gap-2 overflow-x-auto scroll-smooth no-scrollbar flex-1 px-1">
+
+        <a routerLink="/menu" class="block shrink-0">
+            <div [class]="!selectedCategoryId 
+            ? 'bg-primary text-white border border-primary px-3 py-1.5 flex items-center gap-x-2 transition-colors' 
+            : 'border border-gray-200 hover:bg-gray-50 px-3 py-1.5 flex items-center gap-x-2 transition-colors'">
+                <span class="text-sm h-6 flex items-center justify-center px-1">Todos</span>
+            </div>
+        </a>
+
+        <a [routerLink]="selectedCategoryId === 'promociones' ? '/menu' : ['/menu', 'promociones']"
+            class="block shrink-0">
+            <div [class]="selectedCategoryId === 'promociones'
+            ? 'bg-primary text-white border border-primary px-3 py-1.5 flex items-center gap-x-2 transition-colors' 
+            : 'border border-gray-200 hover:bg-gray-50 px-3 py-1.5 flex items-center gap-x-2 transition-colors'">
+                <span class="text-sm h-6 flex items-center justify-center px-1">Promociones</span>
+            </div>
+        </a>
+
+        @for (category of categories; track category.id) {
+        <a [routerLink]="selectedCategoryId === category.id ? '/menu' : ['/menu', category.id]" class="block shrink-0">
+            <div [class]="selectedCategoryId === category.id 
+            ? 'bg-primary text-white border border-primary px-3 py-1.5 flex items-center gap-x-2 transition-colors' 
+            : 'border border-gray-200 hover:bg-gray-50 px-3 py-1.5 flex items-center gap-x-2 transition-colors'">
+                <span class="text-sm h-6 flex items-center justify-center px-1 text-nowrap">{{ category.name
+                    }}</span>
+            </div>
+        </a>
+        }
+
+    </div>
+
+    <!-- Right Arrow -->
+    @if (showRightArrow) {
+    <div class="absolute right-0 z-10 h-10 pl-2 bg-linear-to-r from-white to-white flex items-center">
+        <button (click)="scrollRight()"
+            class="bg-white border border-gray-200 p-1.5 hover:bg-gray-50 flex items-center justify-center transition-opacity">
+            <svg lucideChevronRight class="size-5" />
+        </button>
+    </div>
+    }
+
+</div>

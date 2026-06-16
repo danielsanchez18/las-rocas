@@ -1,0 +1,41 @@
+<div class="space-y-7 lg:w-sm xl:w-md">
+
+    <h2 class="text-lg uppercase font-title">Resumen del pedido</h2>
+
+    <div class="space-y-2">
+
+        <div class="text-sm flex items-center justify-between">
+            <p class="text-gray-500">Subtotal ({{ itemCount }} items)</p>
+            <p class="">S/. {{ subtotal | number:'1.2-2' }}</p>
+        </div>
+
+        <div class="text-sm flex items-center justify-between">
+            <p class="text-gray-500">Costo por envío</p>
+            <p class="">S/. {{ deliveryCost | number:'1.2-2' }}</p>
+        </div>
+
+        <div class="text-sm flex items-center justify-between">
+            <p class="text-gray-500">Tiempo Estimado</p>
+            <p class="">20 min</p>
+        </div>
+
+        <div class="text-sm flex items-center justify-between">
+            <p class="text-gray-500">Cupón aplicado</p>
+            <button class="underline underline-offset-2 text-sm text-green-600">Aplicar cupón</button>
+        </div>
+
+        <div class="mt-5 pt-5 border-t border-gray-200 font-medium text-sm flex items-center justify-between">
+            <p>Total</p>
+            <p>S/. {{ total | number:'1.2-2' }}</p>
+        </div>
+    </div>
+
+    <div class="space-y-3 text-center">
+        <button routerLink="/checkout" [disabled]="itemCount === 0"
+            class="w-full text-center py-3 px-6 bg-primary text-white font-medium text-sm hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed">
+            Finalizar compra
+        </button>
+        <p class="text-sm text-gray-700">Al finalizar la compra aceptas nuestros <a href="/terminos-y-condiciones"
+                class="underline underline-offset-2 hover:text-primary">términos y condiciones</a></p>
+    </div>
+</div>

@@ -1,0 +1,150 @@
+<div class="divide-y divide-gray-300 px-0.5">
+
+    <!-- Foto -->
+    <div class="flex items-center gap-x-5 pb-5">
+        <div class="size-16 bg-gray-100 rounded-full overflow-hidden flex items-center justify-center border border-gray-200">
+            @if (user?.photoUrl) {
+                <img [src]="user?.photoUrl" alt="Foto de perfil" class="w-full h-full object-cover" />
+            } @else {
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="size-6.5 text-gray-400">
+                    <g fill="none" stroke="currentColor" stroke-width="1.5">
+                        <circle cx="12" cy="6" r="4" />
+                        <path d="M20 17.5c0 2.485 0 4.5-8 4.5s-8-2.015-8-4.5S7.582 13 12 13s8 2.015 8 4.5Z" />
+                    </g>
+                </svg>
+            }
+        </div>
+        
+        <div>
+            <input type="file" #fileInput class="hidden" accept="image/*" (change)="onPhotoSelected($event)">
+            <button (click)="fileInput.click()" [disabled]="isUploadingPhoto" class="text-[13px] border border-gray-300 hover:bg-gray-100/60 px-3 py-1.5 flex items-center gap-x-1 disabled:opacity-50">
+                <svg lucideUpload class="size-3.5" />
+                {{ isUploadingPhoto ? 'Subiendo...' : 'Subir Foto' }}
+            </button>
+        </div>
+    </div>
+
+    <!-- Nombres -->
+    <div class="py-5 flex justify-between gap-x-2">
+
+        <div class="space-y-1 w-full">
+            <h4 class="font-medium text-sm">Nombres completos</h4>
+
+            @if (editMode !== 'names') {
+                <h4 class="text-gray-700 text-sm mt-1">{{ user?.names || 'No especificado' }}</h4>
+            } @else {
+                <div class="flex items-center gap-x-1 mt-3 w-xs">
+                    <input type="text" placeholder="Nombres completos" [(ngModel)]="editNames"
+                        class="outline-none text-sm placeholder:text-sm placeholder:text-gray-500 w-full border border-gray-300 px-3 py-2 focus:border-primary">
+                    <button (click)="saveNames()" class="text-sm bg-primary text-white px-3 py-2 hover:bg-primary-hover">
+                        Guardar
+                    </button>
+                </div>
+            }
+
+        </div>
+
+        @if (editMode !== 'names') {
+            <button (click)="toggleEdit('names')" [disabled]="editMode !== null" [ngClass]="{'opacity-50 cursor-not-allowed': editMode !== null}" class="text-sm underline underline-offset-2 hover:text-primary font-medium h-fit mt-2">Editar</button>
+        } @else {
+            <button (click)="toggleEdit(null)" class="text-sm underline underline-offset-2 hover:text-primary font-medium h-fit mt-2">Cancelar</button>
+        }
+    </div>
+
+    <!-- Correo -->
+    <div class="py-5 flex justify-between gap-x-2">
+
+        <div class="space-y-1 w-full">
+            <h4 class="font-medium text-sm">Correo electrónico</h4>
+
+            @if (editMode !== 'email') {
+                <h4 class="text-gray-700 text-sm mt-1">{{ user?.email || 'No especificado' }}</h4>
+            } @else {
+                <div class="flex items-center gap-x-1 mt-3 w-xs">
+                    <input type="email" placeholder="Correo electrónico" [(ngModel)]="editEmail"
+                        class="outline-none text-sm placeholder:text-sm placeholder:text-gray-500 w-full border border-gray-300 px-3 py-2 focus:border-primary">
+                    <button (click)="saveEmail()" class="text-sm bg-primary text-white px-3 py-2 hover:bg-primary-hover">
+                        Guardar
+                    </button>
+                </div>
+            }
+        </div>
+
+        @if (editMode !== 'email') {
+            <button (click)="toggleEdit('email')" [disabled]="editMode !== null" [ngClass]="{'opacity-50 cursor-not-allowed': editMode !== null}" class="text-sm underline underline-offset-2 hover:text-primary font-medium h-fit mt-2">Editar</button>
+        } @else {
+            <button (click)="toggleEdit(null)" class="text-sm underline underline-offset-2 hover:text-primary font-medium h-fit mt-2">Cancelar</button>
+        }
+    </div>
+
+    <!-- Teléfono -->
+    <div class="py-5 flex justify-between gap-x-2">
+
+        <div class="space-y-1 w-full">
+            <h4 class="font-medium text-sm">Teléfono</h4>
+
+            @if (editMode !== 'phone') {
+                <h4 class="text-gray-700 text-sm mt-1">{{ user?.phoneNumber || 'No especificado' }}</h4>
+            } @else {
+                <div class="flex items-center gap-x-1 mt-3 w-xs">
+                    <input type="number" placeholder="Número de teléfono" [(ngModel)]="editPhone"
+                        class="outline-none text-sm placeholder:text-sm placeholder:text-gray-500 w-full border border-gray-300 px-3 py-2 focus:border-primary">
+                    <button (click)="savePhone()" class="text-sm bg-primary text-white px-3 py-2 hover:bg-primary-hover">
+                        Guardar
+                    </button>
+                </div>
+            }
+        </div>
+
+        @if (editMode !== 'phone') {
+            <button (click)="toggleEdit('phone')" [disabled]="editMode !== null" [ngClass]="{'opacity-50 cursor-not-allowed': editMode !== null}" class="text-sm underline underline-offset-2 hover:text-primary font-medium h-fit mt-2">Editar</button>
+        } @else {
+            <button (click)="toggleEdit(null)" class="text-sm underline underline-offset-2 hover:text-primary font-medium h-fit mt-2">Cancelar</button>
+        }
+    </div>
+
+    <!-- Contraseña -->
+    <div class="py-5 flex justify-between gap-x-2">
+
+        <div class="space-y-1 w-full">
+            <h4 class="font-medium text-sm">Contraseña</h4>
+
+            @if (editMode !== 'password') {
+                <h4 class="text-gray-700 text-sm mt-1">********</h4>
+            } @else {
+                <div class="flex flex-col gap-1 mt-3 w-xs">
+                    <input type="password" placeholder="Ingrese su contraseña actual" [(ngModel)]="currentPassword"
+                        class="outline-none text-sm placeholder:text-sm placeholder:text-gray-500 w-full border border-gray-300 px-3 py-2 focus:border-primary">
+                    <input type="password" placeholder="Ingrese una contraseña nueva" [(ngModel)]="newPassword"
+                        class="outline-none text-sm placeholder:text-sm placeholder:text-gray-500 w-full border border-gray-300 px-3 py-2 focus:border-primary">
+                    <input type="password" placeholder="Confirmar nueva contraseña" [(ngModel)]="confirmPassword"
+                        class="outline-none text-sm placeholder:text-sm placeholder:text-gray-500 w-full border border-gray-300 px-3 py-2 focus:border-primary">
+
+                    <button (click)="savePassword()" class="w-fit text-sm bg-primary text-white px-3 py-2 hover:bg-primary-hover mt-1">
+                        Guardar
+                    </button>
+                </div>
+            }
+        </div>
+
+        @if (editMode !== 'password') {
+            <button (click)="toggleEdit('password')" [disabled]="editMode !== null" [ngClass]="{'opacity-50 cursor-not-allowed': editMode !== null}" class="text-sm underline underline-offset-2 hover:text-primary font-medium h-fit mt-2">Editar</button>
+        } @else {
+            <button (click)="toggleEdit(null)" class="text-sm underline underline-offset-2 hover:text-primary font-medium h-fit mt-2">Cancelar</button>
+        }
+    </div>
+
+    <!-- Documento -->
+    <div class="py-5 flex justify-between gap-x-2">
+
+        <div class="space-y-1">
+            <h4 class="font-medium text-sm">Desactivar mi cuenta</h4>
+            <h4 class="text-gray-700 text-sm">Al desactivar tu cuenta, no podrás acceder a tus pedidos. Esta acción no
+                es reversible</h4>
+        </div>
+
+        <button (click)="deactivateAccount()"
+            class="text-sm underline underline-offset-2 text-red-500 hover:text-red-600 font-medium h-fit mt-2">Desactivar</button>
+    </div>
+
+</div>

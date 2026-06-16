@@ -1,0 +1,21 @@
+<div class="space-y-5">
+
+    <div class="flex items-center justify-between">
+        <h1 class="text-lg font-title uppercase">Detalle de pedido N° {{ order?.orderCode }}</h1>
+        <a routerLink=".."
+            class="flex items-center gap-x-1 text-sm underline underline-offset-2 text-primary hover:text-primary-hover">
+            <svg lucideChevronLeft class="size-4" />
+            Regresar
+        </a>
+    </div>
+
+    <component-order-details *ngIf="order && user" [order]="order" [user]="user" [review]="review" />
+
+</div>
+
+
+<div id="hs-review-modal"
+    class="hs-overlay hidden size-full fixed top-0 inset-s-0 z-80 overflow-x-hidden overflow-y-auto pointer-events-none"
+    role="dialog" tabindex="-1" aria-labelledby="hs-review-modal-label">
+    <component-reviews-add *ngIf="order" [order]="order" [review]="review" (reviewAdded)="onReviewAdded($event)" />
+</div>

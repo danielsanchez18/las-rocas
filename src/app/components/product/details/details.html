@@ -1,0 +1,123 @@
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10" *ngIf="product">
+
+    <!-- Imagen del producto -->
+    <div class="w-full h-140 bg-gray-100 overflow-hidden relative">
+        <!-- Imagen o placeholder -->
+        <img *ngIf="product.imageUrl; else placeholderImg" [src]="product.imageUrl" [alt]="product.name"
+            class="w-full h-full object-cover" />
+        <ng-template #placeholderImg>
+            <div class="h-full flex items-center justify-center">
+                <span class="text-sm">Imagen del producto</span>
+            </div>
+        </ng-template>
+    </div>
+
+    <!-- Información del producto -->
+    <div class="space-y-8">
+
+        <!-- Nombre, precios y disponibilidad -->
+        <div class="space-y-4">
+            <div>
+                <h1 class="text-2xl font-medium text-black tracking-tight">{{ product.name }}</h1>
+                <p class="text-sm text-gray-700 mt-1">Código: {{ product.id }}</p>
+            </div>
+
+            <div class="flex items-baseline gap-4">
+                <ng-container *ngIf="product.inDiscount && product.finalPrice; else normalPrice">
+                    <span class="text-2xl font-medium text-primary">S/. {{ product.finalPrice | number:'1.2-2':'en-US'
+                        }}</span>
+                    <span class="text-sm text-gray-400 line-through">S/. {{ product.basePrice | number:'1.2-2':'en-US'
+                        }}</span>
+                </ng-container>
+                <ng-template #normalPrice>
+                    <span class="text-2xl font-medium text-primary">S/. {{ product.basePrice | number:'1.2-2':'en-US'
+                        }}</span>
+                </ng-template>
+            </div>
+
+            <div class="flex items-center text-sm font-medium gap-2">
+                Disponible:
+                <div class="flex items-center gap-x-2 px-2 py-1 border border-primary text-primary rounded-md">
+                    <svg lucideStore class="size-3.5" />
+                    <p class="font-medium text-[13px]">Tienda</p>
+                </div>
+                <div class="flex items-center gap-x-2 px-2 py-1 border border-primary text-primary rounded-md">
+                    <svg lucideShoppingBag class="size-3.5" />
+                    <p class="font-medium text-[13px]">Delivery</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Descripción -->
+        <div class="space-y-2" *ngIf="product.description || product.shortDescription">
+            <h4 class="font-medium text-sm">Descripción</h4>
+            <p class="text-sm text-gray-700 leading-relaxed">
+                {{ product.description || product.shortDescription }}
+            </p>
+        </div>
+
+        <!-- Ingredientes -->
+        <!-- <div class="space-y-3">
+            <h4 class="font-medium text-sm">Ingredientes</h4>
+            <div class="flex flex-wrap gap-x-1 gap-y-2">
+                <span class="bg-gray-100 px-2.5 py-1.5 rounded-md text-[13px]">Vacuno</span>
+                <span class="bg-gray-100 px-2.5 py-1.5 rounded-md text-[13px]">Jamón</span>
+                <span class="bg-gray-100 px-2.5 py-1.5 rounded-md text-[13px]">Queso</span>
+                <span class="bg-gray-100 px-2.5 py-1.5 rounded-md text-[13px]">Tomate</span>
+                <span class="bg-gray-100 px-2.5 py-1.5 rounded-md text-[13px]">Palta</span>
+                <span class="bg-gray-100 px-2.5 py-1.5 rounded-md text-[13px]">Mayonesa Casera</span>
+            </div>
+        </div> -->
+
+        <!-- Porciones y tiempo -->
+        <div class="grid gap-2">
+            <div class="flex items-center gap-x-4">
+                <p class="text-sm font-medium">Proporciones:</p>
+                <div class="flex text-gray-700 items-center text-sm gap-x-1">
+                    <svg lucideUsers class="size-3.5" />
+                    1 - 2 Personas
+                </div>
+            </div>
+
+            <div class="flex items-center gap-x-4">
+                <p class="text-sm font-medium">Tiempo de preparación:</p>
+                <div class="flex text-gray-700 items-center text-sm gap-x-1">
+                    <svg lucideClock class="size-3.5" />
+                    {{ product.preparationTime }} minutos
+                </div>
+            </div>
+        </div>
+
+        <!-- Control de cantidad -->
+        <div class="flex items-center gap-4">
+            <span class="text-sm font-medium">Cantidad:</span>
+            <div class="flex items-center">
+                <button (click)="decrement()"
+                    class="w-8 h-8 border border-gray-200 rounded flex items-center justify-center hover:bg-gray-100 transition-colors">-</button>
+                <span class="w-8 h-8 flex items-center justify-center">{{ quantity }}</span>
+                <button (click)="increment()"
+                    class="w-8 h-8 border border-gray-200 rounded flex items-center justify-center hover:bg-gray-100 transition-colors">+</button>
+            </div>
+        </div>
+
+        <!-- Botones de acción -->
+        <div class="flex gap-2">
+            <button (click)="addToCart(true)"
+                class="w-full flex-1 bg-primary text-white px-4 py-2 hover:bg-primary-hover transition-colors cursor-pointer">
+                <span class="font-medium text-sm">Comprar ahora</span>
+            </button>
+            <button (click)="addToCart(false)"
+                class="w-full flex-1 bg-gray-100 text-black px-4 py-2 hover:bg-gray-200 transition-colors cursor-pointer">
+                <span class="font-medium text-sm">Agregar al Carrito</span>
+            </button>
+        </div>
+
+        <!-- Instrucciones especiales -->
+        <!-- <div class="space-y-3">
+            <h4 class="text-sm font-medium">Instrucciones Especiales</h4>
+            <textarea
+                class="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                rows="3" placeholder="Ej: Sin cebolla, bien caliente, etc."></textarea>
+        </div> -->
+    </div>
+</div>

@@ -1,0 +1,105 @@
+<div class="flex flex-col gap-y-10">
+
+    @if (!isLoggedIn) {
+    <div>
+        <h1 class="text-lg uppercase font-title">Continua como invitado</h1>
+        <p class="text-sm text-gray-600">
+            o
+            <span>
+                <a href="/auth/ingresar" class="text-black underline underline-offset-2 hover:text-primary">Inicia
+                    sesión</a>
+            </span>
+            para agilizar el proceso
+        </p>
+    </div>
+    }
+
+    <!-- Información de contacto -->
+    <div class="flex flex-col gap-y-5">
+
+        <h3 class="font-medium">Información de contacto</h3>
+
+        <div class="flex flex-col gap-y-2">
+            <label for="names" class="text-sm font-medium">Nombre completo</label>
+            <input id="names" name="names" [(ngModel)]="userInfo.names" [disabled]="isLoggedIn"
+                class="text-sm px-4 py-2 border border-gray-300 outline-none focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:text-gray-500"
+                placeholder="Ingrese su nombre completo" />
+        </div>
+
+        <div class="flex flex-col gap-y-2">
+            <label for="email" class="text-sm font-medium">Correo electrónico</label>
+            <input id="email" name="email" type="email" [(ngModel)]="userInfo.email" [disabled]="isLoggedIn"
+                class="text-sm px-4 py-2 border border-gray-300 outline-none focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:text-gray-500"
+                placeholder="Ingrese su correo electónico" />
+            <p class="text-sm text-gray-500">Te enviaremos el recibo de tu compra aquí.</p>
+        </div>
+
+        <div class="flex flex-col gap-y-2">
+            <label for="phone" class="text-sm font-medium">Número de teléfono</label>
+            <input id="phone" name="phone" type="tel" [(ngModel)]="userInfo.phoneNumber"
+                class="text-sm px-4 py-2 border border-gray-300 outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Ingrese su número de teléfono" />
+        </div>
+
+    </div>
+
+    <!-- Dirección -->
+    <div class="flex flex-col gap-y-7">
+
+        <h1 class="text-lg uppercase font-title">Método de envío</h1>
+
+        <!-- Tipo de Pedido -->
+        <div class="flex items-center gap-x-2">
+            <button (click)="setDeliveryMethod('delivery')"
+                [ngClass]="deliveryMethod === 'delivery' ? 'border-blue-500 border-2' : 'border-gray-300 border'"
+                class="w-full flex items-center justify-center gap-x-2 px-2 py-2 transition-colors">
+                <svg lucideShoppingBag class="size-4" />
+                <p class="text-sm">Envío a domicilio</p>
+            </button>
+            <button (click)="setDeliveryMethod('pickup')"
+                [ngClass]="deliveryMethod === 'pickup' ? 'border-blue-500 border-2' : 'border-gray-300 border'"
+                class="w-full flex items-center justify-center gap-x-2 px-2 py-2 transition-colors">
+                <svg lucideStore class="size-4" />
+                <p class="text-sm">Recoger en restaurante</p>
+            </button>
+        </div>
+
+        <!-- Direccion de envío -->
+        @if (deliveryMethod === 'delivery') {
+        <div class="flex flex-col gap-y-2">
+            <div class="flex items-center justify-between">
+                <h3 class="font-medium text-sm">Dirección de envío</h3>
+                <!-- <button class="text-[13px] underline underline-offset-2 hover:text-primary">Usar ubicación actual</button> -->
+            </div>
+
+            <input [(ngModel)]="userInfo.address" name="address"
+                class="text-sm px-4 py-2 border border-gray-300 outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="Ingrese su dirección" />
+
+            <div class="flex items-center gap-x-2">
+                <input type="checkbox" id="save-address" name="saveInformation" [(ngModel)]="saveInformation" />
+                <label for="save-address" class="text-gray-500 text-sm">Guardar información para futuras compras</label>
+            </div>
+        </div>
+        }
+
+        <!-- Recoger en restaurante -->
+        @if (deliveryMethod === 'pickup') {
+        <div class="flex flex-col gap-y-2">
+            <div class="flex items-center gap-x-2 justify-between">
+                <h3 class="font-medium text-sm">Recoger en restaurante</h3>
+                <a href="/contacto" class="text-[13px] underline underline-offset-2 hover:text-primary">Ver
+                    ubicación</a>
+            </div>
+
+            <input
+                class="text-sm px-4 py-2 border border-gray-300 outline-none focus:ring-blue-500 focus:border-blue-500"
+                placeholder="No se requiere dirección para esta opción." value="Miguel Grau 872, Monsefú" disabled />
+
+            <p class="text-gray-500 text-sm">Recuerda que atendemos hasta las 11:00 p.m.</p>
+        </div>
+        }
+
+    </div>
+
+</div>

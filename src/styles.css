@@ -1,1 +1,92 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+@import "../node_modules/preline/variants.css";
+
+@source "../node_modules/preline/dist/*.js";
+
+@plugin "@tailwindcss/forms";
+
+@layer base {
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+}
+
+@custom-variant hover (&:hover);
+
+@theme {
+  --font-primary: "Google Sans", sans-serif;
+  --font-title: "Oswald", sans-serif;
+
+  --color-primary: #155dfc;
+  --color-primary-hover: #193cb8;
+}
+
+:root {
+  @apply font-primary;
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+/* Ocultar el scrollbar */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Ocultar flechas de los input de tipo number Para Chrome, Safari, Edge, Opera */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Ocultar flechas de los input de tipo number Para Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input[type=number] {
+  @apply focus:outline-none focus:border-transparent focus:ring-2 focus:ring-primary;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+.animate-fade-out {
+  animation: fadeOut 0.15s ease-in forwards;
+}
+
+.fade-leave {
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}

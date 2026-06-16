@@ -1,0 +1,42 @@
+<main class="min-h-dvh flex flex-col">
+
+    <!-- Header -->
+    <div class="max-w-250 mx-auto w-full px-4 md:px-7 lg:px-10 py-3 flex items-center justify-between gap-x-5">
+
+        <!-- Logo -->
+        <a href="/" class="h-10 inline-block">
+            <img src="/logo.svg" alt="Logo Las Locas" class="h-full w-auto">
+        </a>
+
+        <button class="size-10 rounded-full overflow-hidden bg-gray-200">
+            <img class="h-full w-full object-cover" />
+        </button>
+    </div>
+
+    <!-- Content -->
+    <div class="flex-1 w-full relative">
+        @if (isLoading) {
+            <div class="max-w-250 mx-auto px-4 py-20 text-center">
+                <p>Cargando información del pedido...</p>
+            </div>
+        } @else if (error) {
+            <div class="max-w-250 mx-auto px-4 py-20 text-center">
+                <p class="text-red-500 font-medium">No se pudo cargar la información del pedido o no existe.</p>
+                <a href="/" class="text-blue-500 hover:underline mt-4 inline-block">Volver al inicio</a>
+            </div>
+        } @else if (order) {
+            <div class="max-w-250 mx-auto h-full px-4 md:px-7 lg:px-10 py-10 grid grid-cols-1 lg:grid-cols-[1fr_auto] lg:gap-x-10 xl:gap-x-20 gap-y-10">
+
+                <component-order-confirmed-resumen [order]="order" />
+
+                <div class="">
+                    <component-order-confirmed-summary [order]="order" />
+                    <div class="pt-5 mt-5 border-t border-gray-300">
+                        <component-checkout-products [inputItems]="order.items" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</main>

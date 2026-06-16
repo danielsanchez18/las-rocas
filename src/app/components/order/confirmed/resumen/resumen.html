@@ -1,0 +1,98 @@
+<section class="flex flex-col gap-y-10 lg:gap-y-15" *ngIf="order">
+
+    <div class="w-full flex flex-col gap-y-10">
+
+        <div class="flex flex-col gap-y-3">
+
+            <h1 class="uppercase text-3xl font-title">🎉 Pedido realizado</h1>
+
+            <p class="text-sm my-2">
+                ¡Gracias por tu compra! Tu pedido ha sido registrado correctamente.
+            </p>
+            <p class="text-gray-700 text-sm">
+                Tu código de orden es
+                <span class="font-medium text-black">{{ order.orderCode }}</span>
+            </p>
+
+            <p class="text-gray-700 text-sm">
+                Se ha enviado una confirmación del pedido a
+                <span class="font-medium text-black">{{ userEmail }}</span>
+            </p>
+        </div>
+
+
+        <div class="flex items-center gap-x-2">
+
+            <!-- <button
+                class="flex items-center gap-x-2 px-4 py-2 text-sm font-medium border border-gray-200 hover:bg-gray-100">
+                <svg lucidePrinter class="size-4" />
+                Ver comprobante
+            </button> -->
+
+            <a href="/menu"
+                class="flex items-center gap-x-2 px-4 py-2 text-sm font-medium bg-primary text-white hover:bg-primary-hover">
+                Seguir comprando
+                <svg lucideChevronRight class="size-4" />
+            </a>
+        </div>
+
+    </div>
+
+    <div class="w-full flex flex-col gap-y-5">
+
+        <h1 class="uppercase text-xl font-title">¿Qué sigue?</h1>
+
+        <div class="flex flex-col gap-y-5">
+
+            <div class="flex items-center gap-x-3">
+                <div class="text-white p-2 rounded-full"
+                    [ngClass]="order.status !== 'PENDING' ? 'bg-primary' : 'bg-primary'">
+                    <svg lucideCheck class="size-4.5" />
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm">Pedido realizado</span>
+                    <span class="text-sm text-gray-500">{{ order.createdAt | date:'dd MMM yyyy - HH:mm' }}</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-x-3">
+                <div class="p-2 rounded-full"
+                    [ngClass]="['ATTENDED', 'DELIVERY_READY', 'OUT_FOR_DELIVERY', 'DELIVERED'].includes(order.status) ? 'bg-primary text-white' : 'bg-gray-200/75'">
+                    <svg lucideCheck class="size-4.5" />
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm">Confirmado y en proceso</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-x-3">
+                <div class="p-2 rounded-full"
+                    [ngClass]="['DELIVERY_READY', 'OUT_FOR_DELIVERY', 'DELIVERED'].includes(order.status) ? 'bg-primary text-white' : 'bg-gray-200/75'">
+                    <svg lucideCheck class="size-4.5" />
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm">Listo para entrega</span>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-x-3">
+                <div class="p-2 rounded-full"
+                    [ngClass]="order.status === 'DELIVERED' ? 'bg-primary text-white' : 'bg-gray-200/75'">
+                    <svg lucideCheck class="size-4.5" />
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-sm">Entregado</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="w-full flex flex-col gap-y-1">
+        <p class="text-sm font-medium">¿Necesitas ayuda? <a href=""
+                class="text-primary underline hover:text-primary-hover">Contáctanos</a></p>
+        <p class="text-sm text-gray-700">Atendemos de lunes a domingo de 9:00 AM a 11:00 PM. Los miércoles no
+            atendemos.</p>
+    </div>
+
+</section>

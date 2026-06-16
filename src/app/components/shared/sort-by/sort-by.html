@@ -1,0 +1,23 @@
+<div class="flex flex-col gap-y-7">
+    <h4 class="uppercase font-title text-lg pb-3 border-b border-gray-200">Ordenar por</h4>
+
+    <div class="flex flex-col gap-y-3">
+
+        <div class="flex items-center gap-x-3 cursor-pointer">
+            <input type="radio" name="sort" id="sort-popular" value="salesCount,desc" [(ngModel)]="sortValue" (change)="onSortChange()" class="w-5 h-5 rounded-full border-gray-300 text-primary">
+            <label for="sort-popular" class="flex-1 text-sm cursor-pointer">Más popular</label>
+        </div>
+        <div class="flex items-center gap-x-3 cursor-pointer">
+            <input type="radio" name="sort" id="sort-cheapest" value="basePrice,asc" [(ngModel)]="sortValue" (change)="onSortChange()"
+                class="w-5 h-5 rounded-full border-gray-300 text-primary">
+            <label for="sort-cheapest" class="flex-1 text-sm cursor-pointer">Más barato</label>
+        </div>
+        <div class="flex items-center gap-x-3 cursor-pointer">
+            <input type="radio" name="sort" id="sort-most-expensive" value="basePrice,desc" [(ngModel)]="sortValue" (change)="onSortChange()"
+                class="w-5 h-5 rounded-full border-gray-300 text-primary">
+            <label for="sort-most-expensive" class="flex-1 text-sm cursor-pointer">Más caro</label>
+        </div>
+
+    </div>
+
+</div>

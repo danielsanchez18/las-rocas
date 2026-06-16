@@ -1,0 +1,75 @@
+<main class="min-h-dvh flex flex-col">
+
+    <!-- Header -->
+    <div class="max-w-250 mx-auto w-full px-4 md:px-7 lg:px-10 py-3 flex items-center justify-between gap-x-5">
+
+        <!-- Logo -->
+        <a href="/" class="h-10 inline-block">
+            <img src="/logo.svg" alt="Logo Las Locas" class="h-full w-auto">
+        </a>
+
+        <div class="flex items-center gap-x-2">
+            <p class="text-sm text-gray-500">1. Finalizar compra</p>
+            <svg lucideChevronRight class="size-4 text-gray-500" />
+            <p class="text-sm font-medium">2. Pago</p>
+            <svg lucideChevronRight class="size-4" />
+            <p class="text-sm text-gray-500">3. Confirmar Pedido</p>
+        </div>
+
+        <a href="/carrito" class="flex items-center gap-x-1 px-2 py-1.5 rounded-full hover:bg-gray-200/75">
+            <svg lucideChevronLeft class="size-4" />
+            <svg lucideShoppingBag class="size-5" />
+        </a>
+    </div>
+
+    <!-- Content -->
+    <div class="flex-1 w-full">
+        <div
+            class="max-w-250 mx-auto h-full px-4 md:px-7 lg:px-10 py-10 grid grid-cols-1 lg:grid-cols-[1fr_auto] lg:gap-x-10 xl:gap-x-20 gap-y-10">
+
+            <div class="">
+                <component-payment-review [checkoutData]="checkoutData" />
+                <div class="pt-5 mt-5 border-t border-gray-300">
+                    <component-payment-method [totalAmount]="totalAmount" />
+                </div>
+            </div>
+
+            <div class="">
+                <component-checkout-summary />
+                <div class="pt-5 mt-5 border-t border-gray-300">
+                    <component-checkout-products />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="sticky bottom-0 w-full border-t border-gray-300 bg-white">
+
+        <div class="max-w-250 mx-auto w-full px-4 md:px-7 lg:px-10 py-5 grid grid-cols-3 gap-x-5">
+
+            <a href="/checkout" class="flex items-center gap-x-2 hover:text-primary w-fit">
+                <svg lucideChevronLeft class="size-4" />
+                <p class="text-sm font-medium underline underline-offset-2">Regresar</p>
+            </a>
+
+            <div class="flex items-center gap-x-1 mx-auto">
+                <div class="rounded-full bg-gray-300 p-1.5"></div>
+                <div class="rounded-full bg-primary p-1.5"></div>
+                <div class="rounded-full bg-gray-300 p-1.5"></div>
+            </div>
+
+            <button (click)="onConfirm()" [disabled]="isLoading"
+                class="w-fit ml-auto bg-primary text-sm font-medium text-white px-4 py-2 hover:bg-primary-hover flex items-center gap-x-1 disabled:opacity-50 disabled:cursor-not-allowed">
+                @if (isLoading) {
+                <span>Confirmando...</span>
+                } @else {
+                Confirmar
+                <svg lucideChevronRight class="size-4" />
+                }
+            </button>
+        </div>
+
+    </div>
+
+</main>

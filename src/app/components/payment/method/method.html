@@ -1,0 +1,131 @@
+<div class="space-y-7">
+    <h1 class="text-lg uppercase font-title">Método de pago</h1>
+
+    <!-- Tipo de Pedido -->
+    <div class="flex items-center gap-x-2">
+        <button (click)="selectMethod('CASH')"
+            [ngClass]="selectedMethod === 'CASH' ? 'border-blue-500 border-2' : 'border-gray-300 border'"
+            class="w-full flex items-center justify-center gap-x-2 px-2 py-2 transition-colors">
+            <svg lucideBanknote class="size-4" />
+            <p class="text-sm">Efectivo</p>
+        </button>
+        <button (click)="selectMethod('YAPE')"
+            [ngClass]="selectedMethod === 'YAPE' ? 'border-blue-500 border-2' : 'border-gray-300 border'"
+            class="w-full flex items-center justify-center gap-x-2 px-2 py-2 transition-colors">
+            <svg lucideSmartphone class="size-4" />
+            <p class="text-sm">Yape/Plin</p>
+        </button>
+        <button (click)="selectMethod('CARD')"
+            [ngClass]="selectedMethod === 'CARD' ? 'border-blue-500 border-2' : 'border-gray-300 border'"
+            class="w-full flex items-center justify-center gap-x-2 px-2 py-2 transition-colors">
+            <svg lucideCreditCard class="size-4" />
+            <p class="text-sm">Tarjeta</p>
+        </button>
+    </div>
+
+    <!-- Efectivo -->
+    @if (selectedMethod === 'CASH') {
+    <div class="space-y-7">
+        <div class="flex items-center gap-x-2 px-3 py-2 bg-gray-100">
+            <svg lucideBadgeInfo class="text-gray-700 size-4" />
+            <p class="text-sm text-gray-700">Si pagas con efectivo, te recomendamos traer el monto exacto.</p>
+        </div>
+
+        <div class="flex flex-col gap-y-2">
+
+            <div class="flex items-center gap-x-4">
+                <p class="text-sm">¿Tienes el monto exacto? (Opcional)</p>
+
+                <div class="flex items-center gap-x-1 ml-auto">
+                    <input type="radio" name="exacto" value="si" [(ngModel)]="exactAmount" class="w-4 h-4" />
+                    <label class="text-sm">Si</label>
+                </div>
+                <div class="flex items-center gap-x-1">
+                    <input type="radio" name="exacto" value="no" [(ngModel)]="exactAmount" class="w-4 h-4" />
+                    <label class="text-sm">No</label>
+                </div>
+            </div>
+
+            <div class="relative">
+                <p class="absolute top-px left-0 flex items-center pl-4 pr-3 py-2 text-gray-700 border-r border-gray-300 text-sm">
+                    S/.</p>
+                <input type="number" min="0" step="0.01" [(ngModel)]="cashGiven" [disabled]="exactAmount === 'si'"
+                    [ngClass]="(exactAmount === 'no' && cashGiven !== null && cashGiven < totalAmount) ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-300 focus:border-blue-500 focus:ring-blue-500'"
+                    class="w-full text-sm px-4 py-2 pl-14 border outline-none disabled:bg-gray-100 disabled:text-gray-500"
+                    placeholder="0.00" />
+            </div>
+
+            <p class="text-gray-700 text-sm">El repartidor llevará S/. {{ changeAmount | number:'1.2-2' }} para cambio.</p>
+        </div>
+    </div>
+    }
+
+    <!-- Yape/Plin -->
+    @if (selectedMethod === 'YAPE') {
+    <div class="space-y-3">
+        <div class="flex gap-x-5">
+            <div class="border border-gray-300 p-2 max-w-48">
+                <img src="/yape_qr.jpeg" alt="Yape" class="h-auto w-full rounded-lg" />
+            </div>
+            <div class="w-full mt-3">
+                <div class="flex items-center gap-x-1">
+                    <p class="text-sm">Número:</p>
+                    <p class="text-sm font-medium">987654321</p>
+                    <button class="ml-auto flex items-center gap-x-1 hover:underline text-primary">
+                        <svg lucideCopy class="size-4" />
+                        <p class="text-sm">Copiar</p>
+                    </button>
+                </div>
+                <div class="flex items-center gap-x-1">
+                    <p class="text-sm">Nombre:</p>
+                    <p class="text-sm font-medium">Juan Sa</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-y-2 mt-5">
+            <label class="text-sm font-medium">Comprobante</label>
+            <div class="flex items-center gap-x-2">
+                <input type="file" (change)="onFileSelected($event)" accept="image/*,.pdf" 
+                    class="w-full border border-gray-300 px-3 py-2 text-sm" />
+                <button class="flex items-center gap-x-1 px-3 py-2 bg-gray-200 hover:bg-gray-300">
+                    <svg lucideUpload class="size-4" />
+                    <p class="text-sm">Subir</p>
+                </button>
+            </div>
+            @if(!yapeFile) {
+                <p class="text-xs text-red-500">Debes adjuntar el comprobante para continuar.</p>
+            }
+        </div>
+
+        <div class="flex items-start gap-x-2 bg-gray-100 p-3 mt-5">
+            <svg lucideBadgeInfo class="min-w-4 size-4 text-gray-700 mt-0.5" />
+            <p class="text-sm text-gray-700">
+                Solo envía la cantidad exacta de la compra. Tu pedido será validado cuando el repartidor verifique la transacción.
+            </p>
+        </div>
+    </div>
+    }
+
+    <!-- Tarjeta -->
+    @if (selectedMethod === 'CARD') {
+    <div class="space-y-5">
+        <p class="text-sm font-medium">Información de la tarjeta de crédito/débito</p>
+        <div class="grid grid-cols-2 gap-3">
+            <input type="text" [(ngModel)]="cardNumber"
+                class="col-span-2 px-4 py-2 border border-gray-300 text-sm focus:border-blue-500 outline-none"
+                placeholder="Número de tarjeta" maxlength="16" />
+            <input type="text" [(ngModel)]="cardExpiry" class="px-4 py-2 border border-gray-300 text-sm focus:border-blue-500 outline-none"
+                placeholder="MM/AA" maxlength="5" />
+            <input type="text" [(ngModel)]="cardCvv" class="px-4 py-2 border border-gray-300 text-sm focus:border-blue-500 outline-none"
+                placeholder="CVV" maxlength="3" />
+            <input type="text" [(ngModel)]="cardName"
+                class="col-span-2 px-4 py-2 border border-gray-300 text-sm focus:border-blue-500 outline-none"
+                placeholder="Nombre del titular" />
+        </div>
+        @if(!isValid) {
+            <p class="text-xs text-red-500">Por favor, completa correctamente los datos de tu tarjeta.</p>
+        }
+    </div>
+    }
+</div>

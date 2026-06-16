@@ -1,0 +1,39 @@
+<div class="space-y-7 lg:w-sm">
+
+    <div class="flex items-center justify-between">
+        <h2 class="text-lg uppercase font-title">Resumen del pedido</h2>
+
+        <a href="/carrito" class="text-sm underline underline-offset-2 text-gray-500 hover:text-black">
+            Editar carrito
+        </a>
+    </div>
+
+    <div class="space-y-2">
+
+        <div class="text-sm flex items-center justify-between">
+            <p class="text-gray-500">Subtotal</p>
+            <p class="">S/. {{ subtotal | number:'1.2-2' }}</p>
+        </div>
+
+        <div class="text-sm flex items-center justify-between">
+            <p class="text-gray-500">Costo por envío</p>
+            <p class="">S/. {{ deliveryCost | number:'1.2-2' }}</p>
+        </div>
+
+        <div class="text-sm flex items-center justify-between">
+            <p class="text-gray-500">Tiempo Estimado</p>
+            <p class="">20 min</p>
+        </div>
+
+        <div class="text-sm flex items-center justify-between">
+            <p class="text-gray-500">Cupón aplicado</p>
+            <button class="underline underline-offset-2 text-sm text-primary">Aplicar cupón</button>
+        </div>
+
+        <div class="mt-5 font-medium text-sm flex items-center justify-between">
+            <p>Total a pagar</p>
+            <p>S/. {{ total | number:'1.2-2' }}</p>
+        </div>
+    </div>
+
+</div>

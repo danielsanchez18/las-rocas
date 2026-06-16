@@ -1,0 +1,180 @@
+<div class="p-2 rounded-xl bg-gray-100 flex flex-col gap-y-2 mb-5 last:mb-0" *ngIf="order">
+
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-2 gap-y-4 p-3 sm:px-5">
+
+        <div class="flex flex-col gap-y-1">
+            <p class="text-[13px] text-gray-700">Estado</p>
+            <div class="flex items-center gap-x-2">
+                <div class="size-2 rounded-full" [ngClass]="statusColorClass"></div>
+                <p class="text-sm font-medium">{{ statusLabel }}</p>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-y-1">
+            <p class="text-[13px] text-gray-700">Nro de Pedido</p>
+            <p class="text-sm font-medium">{{ order.orderCode }}</p>
+        </div>
+
+        <div class="flex flex-col gap-y-1">
+            <p class="text-[13px] text-gray-700">Fecha</p>
+            <p class="text-sm font-medium line-clamp-1">{{ order.createdAt | date:'dd MMM yyyy - hh:mm a' }}</p>
+        </div>
+
+        <div class="flex flex-col gap-y-1">
+            <p class="text-[13px] text-gray-700">Total</p>
+            <p class="text-sm font-medium">S/. {{ order.totalAmount | number:'1.2-2' }}</p>
+        </div>
+
+    </div>
+
+    <div class="bg-white rounded-lg p-5 pb-0 flex flex-col divide-y divide-gray-200">
+
+        <!-- Información General -->
+        <div class="pb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-x-2 gap-y-5">
+            <div class="space-y-2">
+
+                <div class="flex items-center gap-x-2 text-gray-700" *ngIf="order.preparationTime">
+                    <svg lucideClock class="size-3.5" />
+                    <p class="text-sm">Tiempo estimado:</p>
+                    <p class="text-sm text-black">{{ order.preparationTime }} minutos</p>
+                </div>
+
+                <div class="flex items-center gap-x-2 text-gray-700" *ngIf="order.deliveryAddress">
+                    <svg lucideShoppingBag class="size-3.5" />
+                    <p class="text-sm">Entrega a:</p>
+                    <p class="text-sm text-black line-clamp-1">{{ order.deliveryAddress }}</p>
+                </div>
+
+                <div class="flex items-center gap-x-2 text-gray-700" *ngIf="order.orderType === 'PICKUP'">
+                    <svg lucideStore class="size-3.5" />
+                    <p class="text-sm">Recoger en:</p>
+                    <p class="text-sm text-black line-clamp-1">Miguel Grau 872, Monsefú</p>
+                </div>
+
+                <div class="flex items-center gap-x-2 text-gray-700" *ngIf="order.tableId">
+                    <svg lucideShoppingBag class="size-3.5" />
+                    <p class="text-sm">Mesa:</p>
+                    <p class="text-sm text-black line-clamp-1">{{ order.tableNumber }}</p>
+                </div>
+
+            </div>
+
+            <a routerLink="{{ order.id }}"
+                class="w-fit text-sm font-medium px-3 py-2 text-white bg-primary hover:bg-primary-hover transition-colors">
+                Ver detalles
+            </a>
+
+        </div>
+
+        <!-- Estados -->
+        <div class="flex flex-col gap-y-3 py-5" *ngIf="!isCancelled">
+
+            <h4 class="md:hidden text-sm font-medium">Estado del pedido</h4>
+
+            <div class="md:hidden flex items-center justify-between gap-x-5">
+
+                <!-- Estado actual -->
+                <div class="flex items-center gap-x-2 h-6">
+                    <div class="size-2 rounded-full bg-primary animate-pulse"></div>
+                    <p class="text-sm text-primary font-medium line-clamp-1">{{ statusLabel }}</p>
+                </div>
+
+                <!-- Proximo estado -->
+                <div class="flex items-center gap-x-2 h-6" *ngIf="nextStatusLabel">
+                    <svg lucideCircleArrowRight class="size-4 text-black" />
+                    <p class="text-sm font-medium">{{ nextStatusLabel }}</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-4 items-center gap-x-1">
+
+                <!-- Pedido realizado -->
+                <div class="flex flex-col gap-y-2">
+                    <div class="hidden md:flex items-center gap-x-2 h-6">
+                        <svg lucideCheck class="size-4"
+                            [ngClass]="hasReached('PENDING') ? (isCurrentStep('PENDING') ? statusTextColorClass : 'text-black') : 'text-gray-300'" />
+                        <p class="text-sm font-medium line-clamp-1"
+                            [ngClass]="hasReached('PENDING') ? (isCurrentStep('PENDING') ? statusTextColorClass : 'text-black') : 'text-gray-400'">
+                            Pedido realizado</p>
+                    </div>
+                    <div class="rounded-full w-full h-1.5 transition-colors duration-300"
+                        [ngClass]="hasReached('PENDING') ? (isCurrentStep('PENDING') ? statusColorClass : 'bg-black') : 'bg-gray-200'">
+                    </div>
+                </div>
+
+                <!-- Preparando pedido -->
+                <div class="flex flex-col gap-y-2">
+                    <div class="hidden md:flex items-center gap-x-2 h-6">
+                        <div class="size-2 rounded-full"
+                            [ngClass]="isCurrentStep('PREPARING') ? statusColorClass + ' animate-pulse' : 'bg-transparent'">
+                        </div>
+                        <p class="text-sm font-medium line-clamp-1"
+                            [ngClass]="hasReached('PREPARING') ? (isCurrentStep('PREPARING') ? statusTextColorClass : 'text-black') : 'text-gray-400'">
+                            Preparando pedido</p>
+                    </div>
+                    <div class="rounded-full w-full h-1.5 transition-colors duration-300"
+                        [ngClass]="hasReached('PREPARING') ? (isCurrentStep('PREPARING') ? statusColorClass : 'bg-black') : 'bg-gray-200'">
+                    </div>
+                </div>
+
+                <!-- Listo para entrega / recoger -->
+                <div class="flex flex-col gap-y-2">
+                    <div class="hidden md:flex items-center gap-x-2 h-6">
+                        <div class="size-2 rounded-full" *ngIf="isCurrentStep('READY')"
+                            [ngClass]="statusColorClass + ' animate-pulse'"></div>
+                        <p class="text-sm font-medium line-clamp-1"
+                            [ngClass]="hasReached('READY') ? (isCurrentStep('READY') ? statusTextColorClass : 'text-black') : 'text-gray-400'">
+                            {{ order.orderType === 'DELIVERY' ? 'Listo para entrega' : 'Listo para recoger' }}
+                        </p>
+                    </div>
+                    <div class="rounded-full w-full h-1.5 transition-colors duration-300"
+                        [ngClass]="hasReached('READY') ? (isCurrentStep('READY') ? statusColorClass : 'bg-black') : 'bg-gray-200'">
+                    </div>
+                </div>
+
+                <!-- Entregado -->
+                <div class="flex flex-col gap-y-2">
+                    <div class="hidden md:flex items-center gap-x-2 h-6">
+                        <div class="size-2 rounded-full" *ngIf="isCurrentStep('COMPLETED')"
+                            [ngClass]="statusColorClass"></div>
+                        <p class="text-sm font-medium line-clamp-1"
+                            [ngClass]="hasReached('COMPLETED') ? (isCurrentStep('COMPLETED') ? statusTextColorClass : 'text-black') : 'text-gray-400'">
+                            Completado</p>
+                    </div>
+                    <div class="rounded-full w-full h-1.5 transition-colors duration-300"
+                        [ngClass]="hasReached('COMPLETED') ? (isCurrentStep('COMPLETED') ? statusColorClass : 'bg-black') : 'bg-gray-200'">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Productos -->
+        <div class="divide-y divide-gray-200 flex flex-col">
+            <div class="flex gap-x-5 py-5 w-full items-start" *ngFor="let item of order.items">
+                <div
+                    class="h-35 w-30 bg-gray-100 overflow-hidden flex items-center justify-center shrink-0 border border-gray-200">
+                    <img *ngIf="item.productImageUrl" [src]="item.productImageUrl" class="w-full h-full object-cover">
+                    <span *ngIf="!item.productImageUrl" class="text-xs text-gray-400">Sin foto</span>
+                </div>
+
+                <div class="flex flex-col gap-y-1">
+                    <div class="my-2 space-y-1">
+                        <p class="text-sm font-medium">{{ item.productName || item.promotionName }}</p>
+                        <p class="text-sm text-gray-500">S/. {{ item.unitPrice | number:'1.2-2' }}</p>
+                    </div>
+                    <div class="flex gap-x-2 text-sm">
+                        <p class="w-15 text-gray-500">Cantidad:</p>
+                        <p class="font-medium">{{ item.quantity }}</p>
+                    </div>
+                    <div class="flex gap-x-2 text-sm">
+                        <p class="w-15 text-gray-500">Subtotal:</p>
+                        <p class="font-medium">S/. {{ item.subtotal | number:'1.2-2' }}</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

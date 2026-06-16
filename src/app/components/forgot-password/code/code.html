@@ -1,0 +1,63 @@
+<!-- Modal Code Login -->
+
+<div
+    class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-56px)] flex items-center">
+    <div
+        class="w-full flex flex-col gap-y-10 bg-white border border-gray-200 shadow-2xs rounded-2xl pointer-events-auto px-5 py-10">
+
+        <!-- Title -->
+        <div class="text-center space-y-5">
+            <h2 class="text-xl text-balance font-semibold">Comprueba tu bandeja de entrada</h2>
+            <p class="text-sm text-balance text-gray-600">Introduce el código de 6 dígitos que hemos enviado a
+                <span class="text-primary font-semibold">dsanchez151r&#64;gmail.com</span>
+                para completar el inicio de sesión.
+            </p>
+        </div>
+
+        <!-- Input Code -->
+        <div class="flex items-center justify-center gap-x-3" data-hs-pin-input="">
+            <input type="text"
+                class="block w-9.5 sm:w-10 sm:text-lg text-center border-gray-300 rounded-md focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none"
+                data-hs-pin-input-item="" autofocus="">
+            <input type="text"
+                class="block w-9.5 sm:w-10 sm:text-lg text-center border-gray-300 rounded-md focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none"
+                data-hs-pin-input-item="">
+            <input type="text"
+                class="block w-9.5 sm:w-10 sm:text-lg text-center border-gray-300 rounded-md focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none"
+                data-hs-pin-input-item="">
+            <input type="text"
+                class="block w-9.5 sm:w-10 sm:text-lg text-center border-gray-300 rounded-md focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none"
+                data-hs-pin-input-item="">
+            <input type="text"
+                class="block w-9.5 sm:w-10 sm:text-lg text-center border-gray-300 rounded-md focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none"
+                data-hs-pin-input-item="">
+            <input type="text"
+                class="block w-9.5 sm:w-10 sm:text-lg text-center border-gray-300 rounded-md focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none"
+                data-hs-pin-input-item="">
+        </div>
+
+        <!-- Error Message -->
+        <div>
+            <p class="text-center text-sm text-red-600">El código no es correcto. Vuelve a intentarlo.</p>
+        </div>
+
+        <!-- Buttons -->
+        <div class="grid sm:grid-cols-2 gap-y-3 gap-x-3">
+            <button type="button" class="font-medium border border-gray-300 text-sm rounded-full px-4 py-2.5 w-full">
+                Reenviar en 29s
+            </button>
+            <button type="button" class="font-medium bg-primary text-white text-sm rounded-full px-4 py-2.5 w-full"
+                aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-scale-animation-modal"
+                data-hs-overlay="#hs-scale-animation-modal">
+                Verificar
+            </button>
+            <button
+                class="font-medium sm:col-span-2 mt-4 text-sm text-gray-600 hover:underline hover:text-black mx-auto"
+                aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-scale-animation-modal"
+                data-hs-overlay="#hs-scale-animation-modal">
+                Iniciar sesión en una cuenta diferente
+            </button>
+        </div>
+    </div>
+</div>
+<!-- End Modal Code Login -->

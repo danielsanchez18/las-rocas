@@ -1,0 +1,14 @@
+<div class="flex flex-col max-w-350 mx-auto px-4 md:px-7 lg:px-10 py-10 gap-y-10" *ngIf="product">
+
+    <div class="space-y-1">
+        <a [routerLink]="['/menu', product.categoryId]" class="text-primary font-semibold hover:underline text-sm">
+            {{ categoryName }}
+        </a>
+        <h3 class="text-xl font-medium text-black tracking-tighter">
+            {{ product.name }}
+        </h3>
+    </div>
+
+    <component-product-details [product]="product" />
+    <component-product-related [categoryId]="product.categoryId" />
+</div>

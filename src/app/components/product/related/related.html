@@ -1,0 +1,33 @@
+<section class="flex flex-col gap-y-10">
+
+    <div>
+        <h3 class="text-xl font-medium text-black tracking-tighter">Productos Relacionados</h3>
+        <p class="text-gray-700 text-sm">Productos similares a el que estás viendo.</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+
+        <!-- Card Product -->
+        <a *ngFor="let product of products" class="flex flex-col gap-y-4 group"
+            [routerLink]="['/producto', product.id]">
+            <div class="rounded-xl overflow-hidden size-full h-52">
+                <img [src]="product.image" [alt]="product.name"
+                    class="object-cover w-full h-full group-hover:scale-105 transition-transform">
+            </div>
+            <div class="">
+                <h4 class="font-semibold text-sm line-clamp-1">{{ product.name }}</h4>
+                <p class="text-sm text-gray-700 line-clamp-1">{{ product.description }}</p>
+
+                <div class="flex items-center justify-between mt-3">
+                    <p class="font-semibold text-sm line-clamp-1">S/. {{ product.price | number:'1.2-2':'en-US' }}</p>
+                    <!-- <button class="text-primary w-fit text-sm font-semibold hover:underline underline-offset-2">
+                        Agregar al carrito
+                    </button> -->
+                </div>
+            </div>
+        </a>
+
+    </div>
+
+
+</section>
