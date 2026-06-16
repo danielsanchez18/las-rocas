@@ -51,7 +51,7 @@ export class ComponentCartOffcanvas implements OnInit, OnDestroy {
   }
 
   closeOffcanvas(): void {
-    const overlay = document.querySelector('#hs-offcanvas-example');
+    const overlay = document.querySelector('#hs-offcanvas-cart');
     if (overlay) {
       const { HSOverlay } = window as any;
       if (HSOverlay) {
@@ -65,7 +65,9 @@ export class ComponentCartOffcanvas implements OnInit, OnDestroy {
 
   goToCheckout(): void {
     this.closeOffcanvas();
-    this.router.navigate(['/carrito'], { fragment: 'checkout' });
+    setTimeout(() => {
+      this.router.navigate(['/checkout']);
+    }, 300);
   }
 
   goToCart(): void {

@@ -59,6 +59,30 @@ export class ComponentPaymentMethod {
     this.cardName = '';
   }
 
+  onCardNumberInput(event: any) {
+    let value = event.target.value.replace(/\D/g, '');
+    if (value.length > 16) {
+      value = value.substring(0, 16);
+    }
+    const parts = [];
+    for (let i = 0; i < value.length; i += 4) {
+      parts.push(value.substring(i, i + 4));
+    }
+    this.cardNumber = parts.join('-');
+  }
+
+  onCardExpiryInput(event: any) {
+    let value = event.target.value.replace(/\D/g, '');
+    if (value.length > 4) {
+      value = value.substring(0, 4);
+    }
+    if (value.length > 2) {
+      this.cardExpiry = value.substring(0, 2) + '/' + value.substring(2);
+    } else {
+      this.cardExpiry = value;
+    }
+  }
+
   onFileSelected(event: any) {
     const file = event.target.files[0];
     if (file) {
@@ -86,7 +110,7 @@ export class ComponentPaymentMethod {
       return this.yapeFile !== null;
     } else if (this.selectedMethod === 'CARD') {
       return (
-        this.cardNumber.length >= 15 &&
+        this.cardNumber.replace(/\D/g, '').length === 16 &&
         this.cardExpiry.length === 5 &&
         this.cardCvv.length >= 3 &&
         this.cardName.trim().length > 0

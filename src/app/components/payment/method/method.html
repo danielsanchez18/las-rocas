@@ -112,10 +112,10 @@
     <div class="space-y-5">
         <p class="text-sm font-medium">Información de la tarjeta de crédito/débito</p>
         <div class="grid grid-cols-2 gap-3">
-            <input type="text" [(ngModel)]="cardNumber"
+            <input type="text" [(ngModel)]="cardNumber" (input)="onCardNumberInput($event)"
                 class="col-span-2 px-4 py-2 border border-gray-300 text-sm focus:border-blue-500 outline-none"
-                placeholder="Número de tarjeta" maxlength="16" />
-            <input type="text" [(ngModel)]="cardExpiry" class="px-4 py-2 border border-gray-300 text-sm focus:border-blue-500 outline-none"
+                placeholder="Número de tarjeta" maxlength="19" />
+            <input type="text" [(ngModel)]="cardExpiry" (input)="onCardExpiryInput($event)" class="px-4 py-2 border border-gray-300 text-sm focus:border-blue-500 outline-none"
                 placeholder="MM/AA" maxlength="5" />
             <input type="text" [(ngModel)]="cardCvv" class="px-4 py-2 border border-gray-300 text-sm focus:border-blue-500 outline-none"
                 placeholder="CVV" maxlength="3" />

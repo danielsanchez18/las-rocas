@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { ComponentSharedNavbar } from '@components/shared/navbar/navbar';
 import { ComponentCartOffcanvas } from '@components/cart/offcanvas/offcanvas';
 import { ComponentSearch } from '@components/search/search';
+import { ComponentSharedFooter } from '@components/shared/footer/footer';
 
 @Component({
   selector: 'layout-landing',
@@ -11,6 +12,7 @@ import { ComponentSearch } from '@components/search/search';
     RouterOutlet,
     ComponentCartOffcanvas,
     ComponentSearch,
+    ComponentSharedFooter,
   ],
   templateUrl: './landing.html',
 })

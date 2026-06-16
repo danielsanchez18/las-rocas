@@ -1,13 +1,16 @@
 <div class="min-h-dvh flex flex-col">
   <component-shared-navbar />
-  <div class="flex-1">
-    <router-outlet />
+  <div class="flex-1 flex flex-col">
+    <div class="flex-1">
+      <router-outlet />
+    </div>
+    <component-shared-footer />
   </div>
 </div>
 
-<div id="hs-offcanvas-example"
+<div id="hs-offcanvas-cart"
   class="hs-overlay hs-overlay-open:translate-x-0 hidden translate-x-full fixed top-0 inset-e-0 transition-all duration-300 transform h-full max-w-sm w-full z-80 bg-overlay border-e border-overlay-line"
-  role="dialog" tabindex="-1" aria-labelledby="hs-offcanvas-example-label">
+  role="dialog" tabindex="-1" aria-labelledby="hs-offcanvas-cart-label">
   <component-cart-offcanvas />
 </div>
 

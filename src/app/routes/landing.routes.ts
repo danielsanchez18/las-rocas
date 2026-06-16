@@ -11,6 +11,10 @@ export const LANDING_ROUTES: Routes = [
         loadComponent: () => import('@pages/home/home').then((m) => m.PageHome),
       },
       {
+        path: 'nosotros',
+        loadComponent: () => import('@pages/nosotros/nosotros').then((c) => c.PageNosotros),
+      },
+      {
         path: 'menu',
         loadComponent: () => import('@pages/menu/menu').then((m) => m.PageMenu),
       },

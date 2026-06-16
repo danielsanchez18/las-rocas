@@ -3,7 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ApiResponse } from '@core/interfaces/shared/api-response.interface';
 import { Page } from '@core/interfaces/shared/page.interface';
-import { OrderFilters, OrderRequest, OrderResponse, OrderHistoryResponse } from '@core/interfaces/orders/order.interface';
+import { OrderFilters, OrderRequest, OrderResponse, OrderHistoryResponse, OrderWebRequest } from '@core/interfaces/orders/order.interface';
 import { API_URL } from '@core/utils/api';
 
 @Injectable({
@@ -41,6 +41,19 @@ export class OrderService {
 
   create(request: OrderRequest): Observable<ApiResponse<OrderResponse>> {
     return this.http.post<ApiResponse<OrderResponse>>(this.apiUrl, request);
+  }
+
+  createWeb(request: OrderWebRequest, yapeFile?: File): Observable<ApiResponse<OrderResponse>> {
+    const formData = new FormData();
+    formData.append('order', new Blob([JSON.stringify(request)], {
+      type: 'application/json'
+    }));
+    
+    if (yapeFile) {
+      formData.append('yapeReceipt', yapeFile);
+    }
+    
+    return this.http.post<ApiResponse<OrderResponse>>(`${this.apiUrl}/web`, formData);
   }
 
   updated(id: string, request: OrderRequest): Observable<ApiResponse<OrderResponse>> {

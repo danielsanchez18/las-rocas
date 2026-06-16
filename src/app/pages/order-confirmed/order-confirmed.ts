@@ -6,6 +6,9 @@ import { ComponentOrderConfirmedSummary } from '@components/order/confirmed/summ
 import { ComponentOrderConfirmedResumen } from '@components/order/confirmed/resumen/resumen';
 import { OrderService } from '@core/service/orders/order.service';
 import { OrderResponse } from '@core/interfaces/orders/order.interface';
+import { AuthService } from '@core/service/auth/auth.service';
+import { UserService } from '@core/service/users/user.service';
+import { UserResponse } from '@core/interfaces/users/user.interface';
 import { Subscription } from 'rxjs';
 import confetti from 'canvas-confetti';
 
@@ -22,9 +25,12 @@ import confetti from 'canvas-confetti';
 export class PageOrderConfirmed implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private orderService = inject(OrderService);
+  private authService = inject(AuthService);
+  private userService = inject(UserService);
   
   private routeSub?: Subscription;
   order: OrderResponse | null = null;
+  user: UserResponse | null = null;
   isLoading = true;
   error = false;
 
@@ -38,6 +44,7 @@ export class PageOrderConfirmed implements OnInit, OnDestroy {
         this.error = true;
       }
     });
+    this.fetchUser();
   }
 
   ngOnDestroy() {
@@ -57,6 +64,18 @@ export class PageOrderConfirmed implements OnInit, OnDestroy {
         this.error = true;
       }
     });
+  }
+
+  fetchUser() {
+    const currentUser = this.authService.currentUser();
+    if (currentUser?.id) {
+      this.userService.findById(currentUser.id).subscribe({
+        next: (res) => {
+          this.user = res.data;
+        },
+        error: (err) => console.error('Error fetching user', err)
+      });
+    }
   }
 
   fireConfetti() {

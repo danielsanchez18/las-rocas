@@ -14,7 +14,7 @@ import { CartService } from '@core/service/cart/cart.service';
 import { AuthService } from '@core/service/auth/auth.service';
 import { firstValueFrom, Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
-import { OrderRequest } from '@core/interfaces/orders/order.interface';
+import { OrderRequest, OrderWebRequest } from '@core/interfaces/orders/order.interface';
 
 @Component({
   selector: 'page-payment',
@@ -85,14 +85,11 @@ export class PagePayment implements OnInit {
       }
 
       const currentUser = this.authService.currentUser();
-      
-      // Siempre mandaremos CASH según requerimiento para el backend
-      const paymentMethod = 'CASH'; 
-      // Si la UI requiere el real: const realPaymentMethod = this.methodComponent ? this.methodComponent.selectedMethod : 'YAPE';
+      const paymentMethod = this.methodComponent ? this.methodComponent.selectedMethod : 'CASH'; 
 
       const orderType = this.checkoutData?.deliveryMethod === 'pickup' ? 'PICKUP' : 'DELIVERY';
 
-      const orderRequest: OrderRequest = {
+      const orderRequest: OrderWebRequest = {
         userId: currentUser?.id,
         orderType: orderType,
         paymentMethod: paymentMethod,
@@ -104,7 +101,18 @@ export class PagePayment implements OnInit {
         }))
       };
 
-      const res = await firstValueFrom(this.orderService.create(orderRequest));
+      if (paymentMethod === 'CASH') {
+        if (this.methodComponent?.exactAmount === 'no' && this.methodComponent?.cashGiven) {
+          orderRequest.cashGiven = this.methodComponent.cashGiven;
+        }
+      } else if (paymentMethod === 'CARD') {
+        // DEMO token for card
+        orderRequest.cardTransactionId = 'DEMO-TX-' + Math.random().toString(36).substring(2, 10).toUpperCase();
+      }
+
+      const yapeFile = paymentMethod === 'YAPE' && this.methodComponent ? this.methodComponent.yapeFile || undefined : undefined;
+
+      const res = await firstValueFrom(this.orderService.createWeb(orderRequest, yapeFile));
       
       if (res.data) {
         // Clear cart and checkout data

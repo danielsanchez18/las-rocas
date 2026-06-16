@@ -18,6 +18,16 @@ export interface OrderRequest {
   items: OrderItemRequest[];
 }
 
+export interface OrderWebRequest {
+  userId?: string;
+  orderType: string; // DINE_IN, PICKUP, DELIVERY
+  paymentMethod: string;
+  deliveryAddress?: string;
+  items: OrderItemRequest[];
+  cashGiven?: number;
+  cardTransactionId?: string;
+}
+
 export interface OrderItemPromotionProductResponse {
   productId: string;
   productName: string;
