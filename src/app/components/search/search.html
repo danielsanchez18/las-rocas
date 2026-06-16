@@ -1,76 +1,93 @@
 <div
-    class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-2xl sm:w-full m-3 sm:mx-auto min-h-[calc(100%-56px)] flex items-center">
+    class="hs-overlay-animation-target hs-overlay-open:scale-100 hs-overlay-open:opacity-100 scale-95 opacity-0 ease-in-out transition-all duration-200 sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-56px)] flex items-center">
     <div class="w-full flex flex-col bg-white  rounded-xl pointer-events-auto">
 
         <div class="p-5 lg:p-7">
 
             <!-- Input Search -->
             <div class="relative">
-                <input type="text"
+                <input type="text" [ngModel]="searchText()" (ngModelChange)="onSearchChange($event)"
                     class="block w-full rounded-lg pl-10 pr-4 py-2 text-sm border-gray-300 focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none"
-                    placeholder="Buscar productos">
+                    placeholder="Buscar productos o promociones">
                 <svg lucideSearch class="absolute top-1/2 left-3.5 transform -translate-y-1/2 text-gray-500 size-4" />
+                <div *ngIf="isLoading()" class="absolute top-1/2 right-3.5 transform -translate-y-1/2">
+                    <div class="animate-spin inline-block size-4 border-2 border-current border-t-transparent text-primary rounded-full"
+                        role="status" aria-label="loading"></div>
+                </div>
             </div>
 
-
             <!-- Sugerencias -->
-            <div class="my-5 space-y-1">
-                <h2 class="px-4 py-2 text-sm text-gray-700">Búsquedas Sugeridas</h2>
-                <button
-                    class="flex w-full text-left text-gray-700 hover:text-black items-center gap-2 px-4 py-2 hover:bg-gray-200/50 text-sm">
-                    <svg lucideSearch class="size-4" />
-                    <p>Alitas Acevichadas</p>
-                </button>
-                <button
-                    class="flex w-full text-left text-gray-700 hover:text-black items-center gap-2 px-4 py-2 hover:bg-gray-200/50 text-sm">
-                    <svg lucideSearch class="size-4" />
-                    <p>Alitas Acevichadas</p>
-                </button>
-                <button
-                    class="flex w-full text-left text-gray-700 hover:text-black items-center gap-2 px-4 py-2 hover:bg-gray-200/50 text-sm">
-                    <svg lucideSearch class="size-4" />
-                    <p>Alitas Acevichadas</p>
-                </button>
-                <button
-                    class="flex w-full text-left text-gray-700 hover:text-black items-center gap-2 px-4 py-2 hover:bg-gray-200/50 text-sm">
-                    <svg lucideSearch class="size-4" />
-                    <p>Alitas Acevichadas</p>
-                </button>
+            <div *ngIf="!searchText() && suggestions().length > 0" class="my-5 space-y-5">
+
+                <h2 class="text-sm">Productos Populares</h2>
+
+                <div class="grid grid-cols-2 gap-4 pb-2">
+                    <button *ngFor="let item of suggestions()" (click)="useSuggestion(item.name)"
+                        class="text-start w-full flex flex-col gap-y-2 group">
+                        <div class="w-full h-40 bg-gray-100 rounded-lg overflow-hidden relative">
+                            <img *ngIf="item.imageUrl" [src]="item.imageUrl" [alt]="item.name"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div *ngIf="!item.imageUrl"
+                                class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">
+                                <span class="text-[10px] font-medium">Sin imagen</span>
+                            </div>
+                        </div>
+                        <div class="text-xs space-y-1 w-full">
+                            <p class="font-medium line-clamp-1 group-hover:underline group-hover:text-primary">{{
+                                item.name }}</p>
+                            <p class="font-semibold mt-1">S/. {{ item.price.toFixed(2) }}</p>
+                        </div>
+                    </button>
+                </div>
             </div>
 
             <!-- Productos -->
-            <div class="grid grid-cols-2 md:grid-cols-3 items-center gap-x-5">
-
-                <button class="text-start flex flex-col gap-y-3 group">
-                    <div class="w-full h-40 bg-gray-100"></div>
-                    <div class="text-sm space-y-1">
-                        <p class="font-medium line-clamp-1 group-hover:underline group-hover:text-primary">Nombre del
-                            producto</p>
-                        <p class="text-gray-500 line-clamp-1">Descripción del producto</p>
-                        <p class="font-medium">S/. 24.00</p>
+            <div *ngIf="searchText()" class="mt-5">
+                <div class="flex items-center justify-between px-4 mb-2">
+                    <h2 class="text-sm font-medium text-gray-700">Resultados</h2>
+                    <div *ngIf="results().length > 4" class="flex gap-2">
+                        <button (click)="scrollResults('left')"
+                            class="p-1 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors">
+                            <svg lucideChevronLeft class="size-4" />
+                        </button>
+                        <button (click)="scrollResults('right')"
+                            class="p-1 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 transition-colors">
+                            <svg lucideChevronRight class="size-4" />
+                        </button>
                     </div>
-                </button>
+                </div>
 
-                <button class="text-start flex flex-col gap-y-3 group">
-                    <div class="w-full h-40 bg-gray-100"></div>
-                    <div class="text-sm space-y-1">
-                        <p class="font-medium line-clamp-1 group-hover:underline group-hover:text-primary">Nombre del
-                            producto</p>
-                        <p class="text-gray-500 line-clamp-1">Descripción del producto</p>
-                        <p class="font-medium">S/. 24.00</p>
-                    </div>
-                </button>
+                <div *ngIf="results().length === 0 && !isLoading()" class="px-4 py-8 text-center text-gray-500 text-sm">
+                    No se encontraron resultados para "{{ searchText() }}"
+                </div>
 
-                <button class="text-start flex flex-col gap-y-3 group">
-                    <div class="w-full h-40 bg-gray-100"></div>
-                    <div class="text-sm space-y-1">
-                        <p class="font-medium line-clamp-1 group-hover:underline group-hover:text-primary">Nombre del
-                            producto</p>
-                        <p class="text-gray-500 line-clamp-1">Descripción del producto</p>
-                        <p class="font-medium">S/. 24.00</p>
-                    </div>
-                </button>
-
+                <div *ngIf="results().length > 0" id="results-container"
+                    class="flex overflow-x-auto gap-4 px-4 pb-2 snap-x snap-mandatory scrollbar-hide"
+                    style="scrollbar-width: none; -ms-overflow-style: none;">
+                    <button *ngFor="let item of results()" (click)="goToItem(item)"
+                        class="text-start flex-none w-[160px] flex flex-col gap-y-3 group snap-start">
+                        <div class="w-full h-40 bg-gray-100 rounded-lg overflow-hidden relative">
+                            <img *ngIf="item.imageUrl" [src]="item.imageUrl" [alt]="item.name"
+                                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                            <div *ngIf="!item.imageUrl"
+                                class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">
+                                <span class="text-xs font-medium">{{ item.type === 'promotion' ? 'Promoción' : 'Sin
+                                    imagen' }}</span>
+                            </div>
+                        </div>
+                        <div class="text-sm space-y-1 w-full">
+                            <p class="font-medium line-clamp-1 group-hover:underline group-hover:text-primary">{{
+                                item.name }}</p>
+                            <p class="text-gray-500 line-clamp-2 text-xs">{{ item.description }}</p>
+                            <p class="font-medium mt-1">S/. {{ item.price.toFixed(2) }}</p>
+                        </div>
+                    </button>
+                </div>
+                <style>
+                    #results-container::-webkit-scrollbar {
+                        display: none;
+                    }
+                </style>
             </div>
 
         </div>
