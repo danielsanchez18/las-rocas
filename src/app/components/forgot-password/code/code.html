@@ -9,47 +9,45 @@
         <div class="text-center space-y-5">
             <h2 class="text-xl text-balance font-semibold">Comprueba tu bandeja de entrada</h2>
             <p class="text-sm text-balance text-gray-600">Introduce el código de 6 dígitos que hemos enviado a
-                <span class="text-primary font-semibold">dsanchez151r&#64;gmail.com</span>
-                para completar el inicio de sesión.
+                <span class="text-primary font-semibold">{{ email || 'tu correo' }}</span>
+                para completar la recuperación.
             </p>
         </div>
 
         <!-- Input Code -->
         <div class="flex items-center justify-center gap-x-3" data-hs-pin-input="">
-            <input type="text"
+            <input type="text" [(ngModel)]="codeArr[0]" (input)="onInput($event, 0)" (keydown)="onKeyDown($event, 0)" maxlength="1"
                 class="block w-9.5 sm:w-10 sm:text-lg text-center border-gray-300 rounded-md focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none"
                 data-hs-pin-input-item="" autofocus="">
-            <input type="text"
+            <input type="text" [(ngModel)]="codeArr[1]" (input)="onInput($event, 1)" (keydown)="onKeyDown($event, 1)" maxlength="1"
                 class="block w-9.5 sm:w-10 sm:text-lg text-center border-gray-300 rounded-md focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none"
                 data-hs-pin-input-item="">
-            <input type="text"
+            <input type="text" [(ngModel)]="codeArr[2]" (input)="onInput($event, 2)" (keydown)="onKeyDown($event, 2)" maxlength="1"
                 class="block w-9.5 sm:w-10 sm:text-lg text-center border-gray-300 rounded-md focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none"
                 data-hs-pin-input-item="">
-            <input type="text"
+            <input type="text" [(ngModel)]="codeArr[3]" (input)="onInput($event, 3)" (keydown)="onKeyDown($event, 3)" maxlength="1"
                 class="block w-9.5 sm:w-10 sm:text-lg text-center border-gray-300 rounded-md focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none"
                 data-hs-pin-input-item="">
-            <input type="text"
+            <input type="text" [(ngModel)]="codeArr[4]" (input)="onInput($event, 4)" (keydown)="onKeyDown($event, 4)" maxlength="1"
                 class="block w-9.5 sm:w-10 sm:text-lg text-center border-gray-300 rounded-md focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none"
                 data-hs-pin-input-item="">
-            <input type="text"
+            <input type="text" [(ngModel)]="codeArr[5]" (input)="onInput($event, 5)" (keydown)="onKeyDown($event, 5)" maxlength="1"
                 class="block w-9.5 sm:w-10 sm:text-lg text-center border-gray-300 rounded-md focus:border-primary focus:ring-primary disabled:opacity-50 disabled:pointer-events-none"
                 data-hs-pin-input-item="">
         </div>
 
         <!-- Error Message -->
-        <div>
-            <p class="text-center text-sm text-red-600">El código no es correcto. Vuelve a intentarlo.</p>
+        <div *ngIf="errorMessage">
+            <p class="text-center text-sm text-red-600">{{ errorMessage }}</p>
         </div>
 
         <!-- Buttons -->
         <div class="grid sm:grid-cols-2 gap-y-3 gap-x-3">
-            <button type="button" class="font-medium border border-gray-300 text-sm rounded-full px-4 py-2.5 w-full">
-                Reenviar en 29s
+            <button type="button" (click)="resendCode()" class="font-medium border border-gray-300 text-sm rounded-full px-4 py-2.5 w-full hover:bg-gray-50">
+                Reenviar código
             </button>
-            <button type="button" class="font-medium bg-primary text-white text-sm rounded-full px-4 py-2.5 w-full"
-                aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-scale-animation-modal"
-                data-hs-overlay="#hs-scale-animation-modal">
-                Verificar
+            <button type="button" (click)="verifyCode()" [disabled]="isLoading" class="font-medium bg-primary text-white text-sm rounded-full px-4 py-2.5 w-full hover:bg-primary-hover disabled:opacity-50">
+                {{ isLoading ? 'Verificando...' : 'Verificar' }}
             </button>
             <button
                 class="font-medium sm:col-span-2 mt-4 text-sm text-gray-600 hover:underline hover:text-black mx-auto"

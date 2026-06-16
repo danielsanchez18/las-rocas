@@ -5,7 +5,8 @@ import { tap } from 'rxjs/operators';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
-import { AuthRequest, AuthResponse, CurrentUserResponse } from '@core/interfaces/auth/auth.interface';
+import { AuthRequest, AuthResponse, CurrentUserResponse, ForgotPasswordRequest, VerifyCodeRequest, ResetPasswordRequest } from '@core/interfaces/auth/auth.interface';
+import { ApiResponse } from '@core/interfaces/shared/api-response.interface';
 import { API_URL } from '@core/utils/api';
 
 @Injectable({
@@ -21,6 +22,10 @@ export class AuthService {
 
   // Historial de navegación para manejar las redirecciones inteligentes
   private history: string[] = [];
+
+  // Temporary state for password reset flow
+  resetEmail: string | null = null;
+  resetCode: string | null = null;
 
   constructor() {
     // Escuchar los eventos de finalización de navegación para construir el historial
@@ -116,5 +121,28 @@ export class AuthService {
     }
     
     return '/';
+  }
+
+  // --- Recuperación de Contraseña ---
+
+  forgotPassword(request: ForgotPasswordRequest): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.apiUrl}/forgot-password`, request).pipe(
+      tap(() => this.resetEmail = request.email)
+    );
+  }
+
+  verifyCode(request: VerifyCodeRequest): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.apiUrl}/verify-code`, request).pipe(
+      tap(() => this.resetCode = request.code)
+    );
+  }
+
+  resetPassword(request: ResetPasswordRequest): Observable<ApiResponse<void>> {
+    return this.http.post<ApiResponse<void>>(`${this.apiUrl}/reset-password`, request).pipe(
+      tap(() => {
+        this.resetEmail = null;
+        this.resetCode = null;
+      })
+    );
   }
 }

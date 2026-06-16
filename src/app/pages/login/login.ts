@@ -12,7 +12,6 @@ import Swal from 'sweetalert2';
   templateUrl: './login.html',
 })
 export class PageLogin {
-
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -35,7 +34,6 @@ export class PageLogin {
     this.authService.login(this.loginForm.getRawValue()).subscribe({
       next: (response) => {
         this.isLoading.set(false);
-        this.authService.login(this.loginForm.getRawValue());
 
         Swal.fire({
           icon: 'success',
@@ -60,5 +58,4 @@ export class PageLogin {
       },
     });
   }
-
 }
